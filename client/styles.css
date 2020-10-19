@@ -1,0 +1,14 @@
+.placeholder {
+  display: block;
+  height: 100vh;
+  background-color: gray;
+}
+
+.footer {
+  padding: 20px 0;
+  background-color: lightgray;
+}
+
+.clicked {
+  border: 2px solid red;
+}
