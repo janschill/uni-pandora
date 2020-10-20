@@ -25,14 +25,15 @@ class Parser
     header.gsub(':', '').downcase.to_sym
   end
 
-  def parse_body(lines:, content_type:)
+  # Only supports HTML at the moment
+  def parse_body_to_html_string(lines:, content_type:)
     return unless text_html?(content_type: content_type)
 
     html_string = ''
     lines.each do |line|
       html_string += line
     end
-    IO.binwrite('answer.html', html_string)
+    html_string
   end
 
   def parse_headers; end
@@ -50,7 +51,7 @@ class Parser
       headers[header] = value
     end
 
-    body = parse_body(
+    body = parse_body_to_html_string(
       lines: request.lines[body_start + 1..-1],
       content_type: headers[:"content-type"]
     )
