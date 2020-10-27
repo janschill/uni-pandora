@@ -1,1 +1,5 @@
 .DS_store
+.byebug_history
+.vscode/
+*.jpg
+*.7z
