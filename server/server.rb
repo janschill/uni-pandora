@@ -23,8 +23,12 @@ loop do
   client = server.accept
   request = client.readpartial(2048)
   request = Parser.new.read(request: request)
+  body = request[:body] # This is a HTML string
   response = Router.new.respond(request: request)
-  ImageGenerator.new
+  # time_now = Util.now_iso_8601
+  # path =
+  # HTMLGenerator.new(html_string: body)
+  # ImageGenerator.new
 
   puts log_request(request: request)
   response.send(client: client)
