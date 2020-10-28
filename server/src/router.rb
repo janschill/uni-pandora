@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'response'
+require_relative 'logger'
+require_relative 'logger_request'
 
 class Router
   SERVER_ROOT = '/Users/janschill/code/janschill/uni-pandora/server/src/'
+
   def initialize; end
 
   def respond_with(code:, data: '')
@@ -16,7 +19,9 @@ class Router
     when '/'
       Response.new(code: 200, data: File.binread("#{SERVER_ROOT}index.html"))
     when '/logger'
-      Response.new(code: 200, data: 'test')
+      logger_request = LoggerRequest.new(request: request[:body])
+      logger = Logger.new
+      Response.new(code: 200, data: 'Logging successfully')
     else
       Response.new(code: 404)
     end
