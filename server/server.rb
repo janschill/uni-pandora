@@ -23,7 +23,7 @@ loop do
   client = server.accept
   request = client.readpartial(2048)
   request = Parser.new.read(request: request)
-  body = request[:body] # This is a HTML string
+  body = request[:body]
   response = Router.new.respond(request: request)
   # time_now = Util.now_iso_8601
   # path =
