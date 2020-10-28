@@ -14,13 +14,15 @@ class Router
   end
 
   def respond(request:)
-    case request[:path]
+    case request.path
     # This is vulnerable to path traversal
     when '/'
       Response.new(code: 200, data: File.binread("#{SERVER_ROOT}index.html"))
     when '/logger'
-      logger_request = LoggerRequest.new(request: request[:body])
-      logger = Logger.new
+      if request.method == :POST
+        logger_request = LoggerRequest.new(body: request.body)
+        logger = Logger.new
+      end
       Response.new(code: 200, data: 'Logging successfully')
     else
       Response.new(code: 404)
