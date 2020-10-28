@@ -5,9 +5,9 @@ require 'date'
 class LoggerRequest
   attr_reader :id, :time, :path
 
-  def initialize(request:)
-    @id = request[:id].to_i
-    @time = Date.strptime(request[:time])
-    @path = request[:path]
+  def initialize(body:)
+    @id = body[:id].to_i
+    @time = Date.strptime(body[:time])
+    @path = body[:path]
   end
 end
