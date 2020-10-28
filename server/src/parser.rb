@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
-require 'byebug'
+require_relative 'request'
 
 class Parser
   def initialize; end
@@ -35,7 +35,7 @@ class Parser
   # Only supports HTML at the moment
   def parse_body(lines:, content_type:)
     if application_json?(content_type: content_type)
-      JSON.parse(normalize_body(body: lines)[0])
+      JSON.parse(normalize_body(body: lines)[0]).transform_keys(&:to_sym)
     elsif text_html?(content_type: content_type)
       html_string = ''
       lines.each do |line|
@@ -70,11 +70,11 @@ class Parser
 
   def read(request:)
     method, path, _version = request.lines[0].split
-    {
+    Request.new(
       path: path,
       method: method,
       headers: parse_request(request: request)[:headers],
       body: parse_request(request: request)[:body]
-    }
+    )
   end
 end
