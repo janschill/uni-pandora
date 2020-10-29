@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'socket'
-require_relative 'src/parser'
+require_relative 'src/parser/http_parser'
 require_relative 'src/router'
 require_relative 'src/util'
 
@@ -22,7 +22,7 @@ end
 loop do
   client = server.accept
   request = client.readpartial(2048)
-  request = Parser.new.read(request: request)
+  request = Parser::HttpParser.new.read(request: request)
   body = request.body
   response = Router.new.respond(request: request)
   # time_now = Util.now_iso_8601
