@@ -13,8 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   preparePost();
 
-  function createAnchors(pathToPandoraWebsites) {
+  async function get(url) {
+    return fetch(url, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+  }
 
+  function createAnchors(pathToPandoraWebsites) {
     for (let i = 0; i < pathToPandoraWebsites.length; i++) {
       const pandoraWebsiteList = document.querySelector('#pandora-website-list');
       const path = pathToPandoraWebsites[i];
@@ -24,12 +33,16 @@ document.addEventListener('DOMContentLoaded', () => {
       anchor.setAttribute('href', path)
       anchor.onclick = (event) => {
         event.preventDefault();
-        const data = {
-          id: 'randomId',
-          time: new Date().toISOString(),
-          path: path
-        }
-        post('http://localhost:8080/logger', JSON.stringify(data));
+        get('http://localhost:8080/id')
+          .then(response => response.json())
+          .then(data => {
+            const requestData = {
+              id: data.id,
+              time: new Date().toISOString(),
+              path: path
+            }
+            post('http://localhost:8080/logger', JSON.stringify(requestData));
+          })
       };
       anchor.appendChild(text);
 

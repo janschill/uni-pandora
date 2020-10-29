@@ -18,6 +18,9 @@ class Router
     # This is vulnerable to path traversal
     when '/'
       Response.new(code: 200, data: File.binread("#{SERVER_ROOT}index.html"))
+    when '/id'
+      id = Logger.latest_id
+      Response.new(code: 200, data: "{\"id\": #{id}}")
     when '/logger'
       if request.method == :POST
         logger_request = LoggerRequest.new(body: request.body)

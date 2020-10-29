@@ -33,8 +33,8 @@ class Parser
   end
 
   # Only supports HTML at the moment
-  def parse_body(lines:, content_type:)
-    if application_json?(content_type: content_type)
+  def parse_body(lines:, content_type:, method:)
+    if application_json?(content_type: content_type) && method == 'POST'
       JSON.parse(normalize_body(body: lines)[0]).transform_keys(&:to_sym)
     elsif text_html?(content_type: content_type)
       html_string = ''
@@ -47,7 +47,7 @@ class Parser
 
   def parse_headers; end
 
-  def parse_request(request:)
+  def parse_request(request:, method:)
     headers = {}
     body_start = 0
 
@@ -62,7 +62,8 @@ class Parser
 
     body = parse_body(
       lines: request.lines[body_start + 1..-1],
-      content_type: headers[:"content-type"]
+      content_type: headers[:"content-type"],
+      method: method
     )
 
     { headers: headers, body: body }
@@ -73,8 +74,8 @@ class Parser
     Request.new(
       path: path,
       method: method,
-      headers: parse_request(request: request)[:headers],
-      body: parse_request(request: request)[:body]
+      headers: parse_request(request: request, method: method)[:headers],
+      body: parse_request(request: request, method: method)[:body]
     )
   end
 end
