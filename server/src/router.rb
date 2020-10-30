@@ -23,8 +23,8 @@ class Router
       Response.new(code: 200, data: "{\"id\": #{id}}")
     when '/logger'
       if request.method == :POST
-        logger_request = LoggerRequest.new(body: request.body)
-        logger = Logger.new
+        logger_request = LoggerRequest.new.from_http(body: request.body)
+        Logger.new.write_logger_request(logger_request: logger_request)
       end
       Response.new(code: 200, data: 'Logging successfully')
     else
