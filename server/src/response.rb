@@ -7,13 +7,13 @@ class Response
     headers = default_headers if headers.empty?
     @response = if data.eql?('')
                   "HTTP/1.1 #{code}\r\n"\
-                    "#{headers.join('')}"
+                  "#{headers.join('')}"
                 else
                   "HTTP/1.1 #{code}\r\n"\
-                    "#{headers.join('')}"\
-                    "Content-Length: #{data.size}\r\n"\
-                    "\r\n"\
-                    "#{data}\r\n"
+                  "#{headers.join('')}"\
+                  "Content-Length: #{data.size}\r\n"\
+                  "\r\n"\
+                  "#{data}\r\n"
                 end
     @code = code
   end
