@@ -5,10 +5,12 @@ module Parser
     def initialize; end
 
     def parse_row(row:)
+      row_parsed = {}
       row.split(', ').each do |kv|
         key, value = kv.split(': ')
-        a.push({ key.to_sym => value })
+        row_parsed[key.to_sym] = value
       end
+      row_parsed
     end
   end
 end

@@ -19,11 +19,11 @@ class Router
     when '/'
       Response.new(code: 200, data: File.binread("#{SERVER_ROOT}index.html"))
     when '/id'
-      id = Logger.latest_id
+      id = Logger.new_id
       Response.new(code: 200, data: "{\"id\": #{id}}")
     when '/logger'
       if request.method == :POST
-        logger_request = LoggerRequest.new.from_http(body: request.body)
+        logger_request = LoggerRequest.new(data: request.body)
         Logger.new.write_logger_request(logger_request: logger_request)
       end
       Response.new(code: 200, data: 'Logging successfully')

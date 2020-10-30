@@ -27,11 +27,11 @@ class Logger
     File.open(today_path, 'w') { |f| }
   end
 
-  def self.latest_id
+  def self.new_id
     if File.exist?(today_path) && !File.zero?(today_path)
       last_row = File.open(today_path).readlines.map(&:chomp).last
-      logger_request = LoggerRequest.new.from_logger(Parser::Logger.new.parse_row(row: last_row))
-      logger_request.id
+      logger_request = LoggerRequest.new(data: Parser::Logger.new.parse_row(row: last_row))
+      logger_request.id + 1
     elsif File.exist?(today_path) && File.zero?(today_path)
       1
     else
