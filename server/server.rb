@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'socket'
-require_relative 'src/parser/http_parser'
+require_relative 'src/parser/http'
 require_relative 'src/router'
 require_relative 'src/util'
 
@@ -22,13 +22,9 @@ end
 loop do
   client = server.accept
   request = client.readpartial(2048)
-  request = Parser::HttpParser.new.read(request: request)
+  request = Parser::Http.new.read(request: request)
   body = request.body
   response = Router.new.respond(request: request)
-  # time_now = Util.now_iso_8601
-  # path =
-  # HTMLGenerator.new(html_string: body)
-  # ImageGenerator.new
 
   puts log_request(request: request)
   response.send(client: client)

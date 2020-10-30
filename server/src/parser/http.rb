@@ -5,7 +5,7 @@ require_relative '../request'
 require_relative 'parser'
 
 module Parser
-  class HttpParser < Parser
+  class Http < Parser
     def initialize; end
 
     def text_html?(content_type:)
