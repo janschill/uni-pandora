@@ -17,7 +17,15 @@ class Router
     case request.path
     # This is vulnerable to path traversal
     when '/'
-      Response.new(code: 200, data: File.binread("#{SERVER_ROOT}index.html"))
+      case request.method
+      when :OPTIONS
+        Response.new(
+          code: '204 No Content',
+          headers: ["Allow: OPTIONS, GET, POST\r\n"]
+        )
+      else
+        Response.new(code: 200, data: File.binread("#{SERVER_ROOT}index.html"))
+      end
     when '/id'
       id = Logger.new_id
       Response.new(code: 200, data: "{\"id\": #{id}}")

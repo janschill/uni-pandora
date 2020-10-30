@@ -23,7 +23,6 @@ loop do
   client = server.accept
   request = client.readpartial(2048)
   request = Parser::Http.new.read(request: request)
-  body = request.body
   response = Router.new.respond(request: request)
 
   puts log_request(request: request)
