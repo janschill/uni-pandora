@@ -1,28 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  function preparePost() {
-    window.post = function (url, data, accept = 'application/json', contentType = 'application/json') {
-      return fetch(url, {
-        method: "POST",
-        body: data,
-        headers: {
-          'Accept': accept,
-          'Content-Type': contentType
-        }
-      });
-    }
-  }
-  preparePost();
-
-  async function get(url) {
-    return fetch(url, {
-      method: "GET",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
-  }
-
   function createAnchors(pathToPandoraWebsites) {
     for (let i = 0; i < pathToPandoraWebsites.length; i++) {
       const pandoraWebsiteList = document.querySelector('#pandora-website-list');
@@ -41,22 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
               time: new Date().toISOString(),
               path: path
             }
-            post('http://localhost:8080/logger', JSON.stringify(requestData));
+            post('http://localhost:8080/logger', JSON.stringify(requestData))
+              .then(() => window.location.href = path);
           })
       };
       anchor.appendChild(text);
-
       li.appendChild(anchor);
       pandoraWebsiteList.appendChild(li);
     }
-  }
-
-  function randomizeOneAnchor() {
-    const randomPandoraAnchor = document.querySelector('#random-pandora-anchor');
-    randomPandoraAnchor.addEventListener('click', () => {
-      const randomIndex = Math.floor(Math.random() * pathToPandoraWebsites.length)
-      randomPandoraAnchor.setAttribute('href', pathToPandoraWebsites[randomIndex])
-    });
   }
 
   const pathToPandoraWebsites = [
@@ -64,5 +32,4 @@ document.addEventListener('DOMContentLoaded', () => {
     'regular/index.html'
   ];
   createAnchors(pathToPandoraWebsites);
-  // randomizeOneAnchor(pathToPandoraWebsites);
 });
