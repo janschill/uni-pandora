@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative 'logger_request'
+require_relative 'parser/logger'
+
 class Logger
   PATH = 'output/logs/'
 
@@ -18,15 +21,23 @@ class Logger
     "#{Dir.pwd}/#{PATH}#{today}"
   end
 
-  def self.latest_id
-    read_latest_entry
-    1
-  end
-
   def self.create_today_file
     return if File.exist?(today_path)
 
-    File.open(path, 'w') { |f| }
+    File.open(today_path, 'w') { |f| }
+  end
+
+  def self.latest_id
+    if File.exist?(today_path) && !File.zero?(today_path)
+      last_row = File.open(today_path).readlines.map(&:chomp).last
+      logger_request = LoggerRequest.new.from_logger(Parser::Logger.new.parse_row(row: last_row))
+      logger_request.id
+    elsif File.exist?(today_path) && File.zero?(today_path)
+      1
+    else
+      create_today_file
+      1
+    end
   end
 
   def self.write(file:, content:)
@@ -36,7 +47,11 @@ class Logger
   # def self.read_latest_entry
   #   file = File.open(path)
   # end
+
+  def write_logger_request(logger_request:)
+    Logger.write(file: Logger.today, content: logger_request.to_s)
+  end
 end
 
-Logger.create_today_file
-Logger.write(file: Logger.today, content: 'id: 2, clicked: start-button')
+# Logger.create_today_file
+# Logger.write(file: Logger.today, content: 'id: 2, clicked: start-button')
