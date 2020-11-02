@@ -9,15 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
       anchor.setAttribute('href', path)
       anchor.onclick = (event) => {
         event.preventDefault();
-        get('http://localhost:8080/id')
+        get(ID_URL)
           .then(response => response.json())
           .then(data => {
             const requestData = {
               id: data.id,
               time: new Date().toISOString(),
-              path: path
+              location: document.location.href,
+              click: path
             }
-            post('http://localhost:8080/logger', JSON.stringify(requestData))
+            post(LOGGER_URL, JSON.stringify(requestData))
               .then(() => {
                 window.location.href = `${path}?id=${requestData.id}`
               });
