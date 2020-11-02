@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
               path: path
             }
             post('http://localhost:8080/logger', JSON.stringify(requestData))
-              .then(() => window.location.href = path);
+              .then(() => {
+                window.location.href = `${path}?id=${requestData.id}`
+              });
           })
       };
       anchor.appendChild(text);
