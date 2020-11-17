@@ -4,3 +4,9 @@
 *.jpg
 *.7z
 output/
+sites/
+prototype/fonts/
+prototype/regular/dw
+prototype/regular/en
+prototype/regular/on
+prototype/regular/index.html

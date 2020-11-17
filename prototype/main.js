@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const li = document.createElement("li");
       const anchor = document.createElement("A");
       const text = document.createTextNode(path.split('/')[0]);
-      anchor.setAttribute('href', path)
+      anchor.classList.add('anchor');
+      anchor.setAttribute('href', path);
       anchor.onclick = (event) => {
         event.preventDefault();
         get(ID_URL)
